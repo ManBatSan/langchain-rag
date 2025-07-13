@@ -10,8 +10,8 @@ RUN pip install --upgrade pip
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY vector_api.py ./
+COPY faiss_server.py ./
 
 COPY index /data/index
 
-RUN "uvicorn vector_api:app --port 8000 --host 0.0.0.0"
+CMD "uvicorn vector_api:app --port 8000 --host 0.0.0.0"
