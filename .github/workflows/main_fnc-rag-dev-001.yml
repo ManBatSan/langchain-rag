@@ -86,7 +86,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Checkout repository
@@ -95,8 +96,8 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id:     ${{ secrets.AZUREAPPSERVICE_CLIENTID_A1FFB7E0501749E69B34EDDA26604127 }}
-          tenant-id:     ${{ secrets.AZUREAPPSERVICE_TENANTID_23305474038D4DDCAFF8F2FA751C04F8 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A1FFB7E0501749E69B34EDDA26604127 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_23305474038D4DDCAFF8F2FA751C04F8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DDCB59654CF544FB97DEE1E0482EBA05 }}
 
       - name: Log in to ACR
