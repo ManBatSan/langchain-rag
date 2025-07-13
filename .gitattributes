@@ -1,0 +1,2 @@
+faiss_container/index/*.index filter=lfs diff=lfs merge=lfs -text
+faiss_container/index/*.json filter=lfs diff=lfs merge=lfs -text

@@ -1,13 +1,19 @@
 import azure.functions as func
 import json
 from langchain_app.rag_client import answer_question, return_test
+import logging
 
+
+app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+
+@app.route(route="main")
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """
     Azure Function HTTP trigger for RAG.
     Expects JSON: {"question": "..."}
     Returns JSON: {"answer": "..."}
     """
+    logging.info('Python HTTP trigger function processed a request.')
     
     try:
         payload = req.get_json()
