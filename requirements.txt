@@ -1,0 +1,10 @@
+azure-functions
+langchain
+langchain_community
+langchain_openai
+faiss-cpu
+openai
+langgraph
+pytest
+requests
+python-dotenv
