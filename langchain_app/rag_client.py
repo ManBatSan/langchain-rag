@@ -58,5 +58,8 @@ chain = RetrievalQA.from_chain_type(
 def answer_question(question: str) -> str:
     return chain.invoke({"query": question})
 
+def return_test():
+    return "This was a small test"
+
 if __name__ == "__main__":
     print(answer_question("What is the role of STAG1/STAG2 proteins in differentiation?"))

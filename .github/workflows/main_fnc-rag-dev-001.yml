@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'functions/rag_function' # set this to the path to your web app project, defaults to the repository root
   PYTHON_VERSION: '3.11' # set this to the python version to use (supports 3.6, 3.7, 3.8)
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r .
 
       # Optional: Add step to run tests here
 
@@ -80,4 +80,32 @@ jobs:
           app-name: 'fnc-rag-dev-001'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
           
+  # build_and_push_faiss:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Build FAISS image
+  #       run: |
+  #         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest ./faiss_container
+  #     - name: Login to ACR
+  #       uses: azure/docker-login@v1
+  #       with:
+  #         login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+  #         username: ${{ secrets.ACR_USERNAME }}
+  #         password: ${{ secrets.ACR_PASSWORD }}
+  #     - name: Push FAISS image
+  #       run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest
+  #     - name: Deploy/update ACI
+  #       run: |
+  #         az container create \
+  #           --resource-group ${{ secrets.AZURE_RG }} \
+  #           --name my-faiss-aci \
+  #           --image ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest \
+  #           --registry-login-server ${{ secrets.ACR_LOGIN_SERVER }} \
+  #           --registry-username ${{ secrets.ACR_USERNAME }} \
+  #           --registry-password ${{ secrets.ACR_PASSWORD }} \
+  #           --dns-name-label my-faiss-service \
+  #           --ports 8000 \
+  #           --restart-policy Always
