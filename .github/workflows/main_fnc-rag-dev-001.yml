@@ -106,9 +106,15 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      - name: Build FAISS Docker image
+        run: |
+          docker build \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest \
+            ./faiss_container
+
       - name: Push FAISS image
         run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest
-        
+
       - name: Deploy/update ACI
         run: |
           az container create \
