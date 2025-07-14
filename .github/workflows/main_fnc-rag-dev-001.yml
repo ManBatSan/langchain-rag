@@ -40,6 +40,8 @@ jobs:
       - name: Prepare function package
         run: |
           cp -R langchain_app functions/rag_function/
+          cp setup.py functions/rag_function/
+          cp requirements.txt functions/rag_function/
 
 
       # Optional: Add step to run tests here
