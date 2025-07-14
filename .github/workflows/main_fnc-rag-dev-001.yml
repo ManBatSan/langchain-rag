@@ -87,7 +87,7 @@ jobs:
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
 
           
- build_and_push_faiss:
+  build_and_push_faiss:
     runs-on: ubuntu-latest
     permissions:
       id-token: write #This is required for requesting the JWT
