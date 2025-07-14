@@ -48,7 +48,6 @@ jobs:
       # Optional: Add step to run tests here
 
       - name: Zip only function folder
-        working-directory: ${{ env.FUNCTION_PATH }}
         run: zip ${{ env.ZIP_NAME }} ./* -r
 
       - name: Upload artifact
