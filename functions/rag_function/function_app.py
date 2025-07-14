@@ -1,7 +1,6 @@
 import azure.functions as func
 import json
-# from langchain_app.rag_client import answer_question, return_test
-from langchain_app.b import b
+from langchain_app.rag_client import answer_question, return_test
 import logging
 
 
@@ -19,11 +18,7 @@ def call_rag(req: func.HttpRequest) -> func.HttpResponse:
     try:
         payload = req.get_json()
         question = payload.get("question")
-        return func.HttpResponse(
-            json.dumps({"answer": question, "test": b}),
-            status_code=200,
-            mimetype="application/json"
-        )
+
         if not question:
             return func.HttpResponse(
                 json.dumps({"error": "Missing 'question'"}),

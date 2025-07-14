@@ -17,7 +17,7 @@ AZURE_OPENAI_API_KEY        = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT       = os.getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_DEPLOYMENT     = os.getenv("AZURE_OPENAI_DEPLOYMENT")
 OPENAI_API_VERSION          = os.getenv("OPENAI_API_VERSION")
-FAISS_SERVICE_URL           = os.getenv("FAISS_SERVICE_URL", "http://localhost:8001/search")
+FAISS_SERVICE_URL           = os.getenv("FAISS_SERVICE_URL", "http://my-faiss-service.eastus.azurecontainer.io:8000/search")
 
 
 PROMPT = PromptTemplate(
