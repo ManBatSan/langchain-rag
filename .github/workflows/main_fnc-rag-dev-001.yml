@@ -11,8 +11,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'functions/rag_function' # set this to the path to your web app project, defaults to the repository root
+  FUNCTION_PATH: 'functions/rag_function'
   PYTHON_VERSION: '3.11' # set this to the python version to use (supports 3.6, 3.7, 3.8)
+  ZIP_NAME: 'release.zip'
 
 jobs:
   build:
@@ -39,23 +40,23 @@ jobs:
 
       - name: Prepare function package
         run: |
-          cp -R langchain_app functions/rag_function/
-          cp setup.py functions/rag_function/
-          cp requirements.txt functions/rag_function/
+          cp -R langchain_app "${{ env.FUNCTION_PATH }}/langchain_app"
+          cp requirements.txt "${{ env.FUNCTION_PATH }}/requirements.txt"
+          cp setup.py "${{ env.FUNCTION_PATH }}/"
 
 
       # Optional: Add step to run tests here
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Zip only function folder
+        working-directory: ${{ env.FUNCTION_PATH }}
+        run: zip -r ../${{ env.ZIP_NAME }} ./*
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: ${{ env.ZIP_NAME }}
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -70,8 +71,6 @@ jobs:
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip     
         
       - name: Login to Azure
         uses: azure/login@v2
@@ -80,13 +79,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_23305474038D4DDCAFF8F2FA751C04F8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DDCB59654CF544FB97DEE1E0482EBA05 }}
 
-      - name: 'Deploy to Azure Functions'
+      - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
-        id: deploy-to-function
         with:
-          app-name: 'fnc-rag-dev-001'
-          slot-name: 'Production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          app-name: fnc-rag-dev-001
+          package: ${{ env.ZIP_NAME }}
 
           
   build_and_push_faiss:
