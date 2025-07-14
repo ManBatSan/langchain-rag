@@ -115,15 +115,17 @@ jobs:
       - name: Push FAISS image
         run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest
 
-      - name: Deploy/update ACI
+      - name: Deploy/update Azure Container Instance
         run: |
           az container create \
             --resource-group ${{ secrets.AZURE_RG }} \
             --name my-faiss-aci \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/faiss:latest \
-            --registry-login-server ${{ secrets.ACR_LOGIN_SERVER }} \
-            --registry-username ${{ secrets.ACR_USERNAME }} \
-            --registry-password ${{ secrets.ACR_PASSWORD }} \
-            --dns-name-label my-faiss-service \
+            --image ${{ secrets.ACR_NAME }}.azurecr.io/faiss:latest \
+            --registry-login-server ${{ secrets.ACR_NAME }}.azurecr.io \
             --ports 8000 \
-            --restart-policy Always
+            --restart-policy Always \
+          || \
+          az container update \
+            --resource-group ${{ secrets.AZURE_RG }} \
+            --name my-faiss-aci \
+            --image ${{ secrets.ACR_NAME }}.azurecr.io/faiss:latest
