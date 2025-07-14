@@ -8,3 +8,4 @@ langgraph
 pytest
 requests
 python-dotenv
+-e .
