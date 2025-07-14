@@ -122,10 +122,15 @@ jobs:
             --name my-faiss-aci \
             --image ${{ secrets.ACR_NAME }}.azurecr.io/faiss:latest \
             --registry-login-server ${{ secrets.ACR_NAME }}.azurecr.io \
+            --registry-username ${{ secrets.ACR_USERNAME }} \
+            --registry-password ${{ secrets.ACR_PASSWORD }} \
             --ports 8000 \
             --restart-policy Always \
-          || \
-          az container update \
+            || \
+            az container update \
             --resource-group ${{ secrets.AZURE_RG }} \
             --name my-faiss-aci \
+            --registry-login-server ${{ secrets.ACR_NAME }}.azurecr.io \
+            --registry-username ${{ secrets.ACR_USERNAME }} \
+            --registry-password ${{ secrets.ACR_PASSWORD }} \
             --image ${{ secrets.ACR_NAME }}.azurecr.io/faiss:latest
