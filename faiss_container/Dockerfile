@@ -14,4 +14,6 @@ COPY faiss_server.py ./
 
 COPY index /data/index
 
-CMD "uvicorn vector_api:app --port 8000 --host 0.0.0.0"
+EXPOSE 8000
+
+CMD ["uvicorn", "faiss_server:app", "--port", "8000", "--host", "0.0.0.0"]
