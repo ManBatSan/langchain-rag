@@ -39,7 +39,7 @@ jobs:
 
       - name: Prepare function package
         run: |
-          cp -R langgraph_app functions/rag_function/
+          cp -R langchain_app functions/rag_function/
 
 
       # Optional: Add step to run tests here
